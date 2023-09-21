@@ -18,6 +18,7 @@ gem "turbo-rails"
 
 group :development, :test do
   gem "debug"
+  gem "pry-rails"
   gem "rspec-rails"
   gem "standardrb"
 end
