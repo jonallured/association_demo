@@ -20,6 +20,20 @@ RSpec.configure do |config|
     Mongoid.purge!
   end
 
+  config.after :each do
+    mongo_models = Mongoid::Config.models - [Mongoid::GlobalDiscriminatorKeyAssignment::InvalidFieldHost]
+    mongo_models.each do |klass|
+      Mongoid.deregister_model(klass)
+      Object.send(:remove_const, klass.to_s.to_sym) if Object.const_defined?(klass.to_s)
+    end
+
+    ApplicationRecord.descendants.each do |klass|
+      Object.send(:remove_const, klass.to_s.to_sym) if Object.const_defined?(klass.to_s)
+    end
+
+    ApplicationRecord.reset_column_information
+  end
+
   config.after :suite do
     Mongoid::Clients.default.database.drop
   end
