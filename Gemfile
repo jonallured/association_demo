@@ -7,6 +7,7 @@ ruby "3.2.2"
 gem "bootsnap", require: false
 gem "importmap-rails"
 gem "jbuilder"
+gem "mongoid"
 gem "pg"
 gem "puma"
 gem "rails"
