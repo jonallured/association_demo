@@ -2,6 +2,26 @@ module HasArAssociation
   extend ActiveSupport::Concern
 
   class_methods do
+    def belongs_to_ar(name)
+      foreign_key_attribute_name = "#{name}_id"
+      getter_method_name = name.to_s
+      getter_klass_name = name.to_s.camelcase.singularize.constantize
+      setter_method_name = "#{name}="
+
+      field foreign_key_attribute_name.to_sym, type: Integer
+
+      define_method setter_method_name do |ar_model|
+        foreign_key_value = ar_model.id
+        assign_attributes({foreign_key_attribute_name => foreign_key_value})
+        foreign_key_value
+      end
+
+      define_method getter_method_name do
+        foreign_key = attributes[foreign_key_attribute_name]
+        getter_klass_name.find_by(id: foreign_key)
+      end
+    end
+
     def has_many_ar(name)
       foreign_key_attribute_name = "#{to_s.underscore}_id"
       getter_method_name = name.to_s

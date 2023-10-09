@@ -17,19 +17,12 @@ describe "ar to mongoid associations" do
 
     class Artwork
       include Mongoid::Document
-
-      field :artist_id, type: Integer
-
-      def artist
-        Artist.find_by(id: artist_id)
-      end
-
-      def artist=(artist)
-        self.artist_id = artist.id
-      end
+      include HasArAssociation
+      # belongs_to_ar :artist
     end
 
     Artist.has_many_mongoid :artworks
+    Artwork.belongs_to_ar :artist
   end
 
   it "does a lot for us" do

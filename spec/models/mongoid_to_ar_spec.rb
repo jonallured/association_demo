@@ -18,19 +18,11 @@ describe "mongoid to ar associations" do
     )
 
     class Artwork < ApplicationRecord
-      attribute :artist_id, :mongoid_id
-      alias_attribute :artist, :artist_id
-
-      def artist=(artist)
-        self.artist_id = artist.id.to_s
-      end
-
-      def artist
-        Artist.find_by(id: artist_id)
-      end
+      include HasMongoidAssociation
     end
 
     Artist.has_many_ar :artworks
+    Artwork.belongs_to_mongoid :artist
   end
 
   it "does a lot for us" do
