@@ -11,9 +11,8 @@ describe "ar to mongoid associations" do
     )
 
     class Artist < ApplicationRecord
-      def artworks
-        Artwork.where(artist_id: id.to_s)
-      end
+      include HasMongoidAssociation
+      # has_many_mongoid :artworks
     end
 
     class Artwork
@@ -29,6 +28,8 @@ describe "ar to mongoid associations" do
         self.artist_id = artist.id
       end
     end
+
+    Artist.has_many_mongoid :artworks
   end
 
   it "does a lot for us" do

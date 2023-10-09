@@ -4,10 +4,8 @@ describe "mongoid to ar associations" do
   before do
     class Artist
       include Mongoid::Document
-
-      def artworks
-        Artwork.where(artist_id: id.to_s)
-      end
+      include HasArAssociation
+      # has_many_ar :artworks
     end
 
     ActiveRecord::Base.connection.execute(
@@ -31,6 +29,8 @@ describe "mongoid to ar associations" do
         Artist.find_by(id: artist_id)
       end
     end
+
+    Artist.has_many_ar :artworks
   end
 
   it "does a lot for us" do
